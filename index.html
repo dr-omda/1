@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Dr. Emad</title>
+  <link rel="icon" href="https://surveyheartmedia.s3.ap-south-1.amazonaws.com/files/063e587367c1d1106ff80aaadeede5/6a259c4b160ebc719dc8c5a3/sh_1780849819933.jpg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-image-light: url('https://surveyheartmedia.s3.ap-south-1.amazonaws.com/files/cd0c33b0594e4433d1a8ca61f11ef7/6a2aa638950484b9af28f9f8/sh_1781180030171.jpg');
+    --bg-image-dark: url('https://surveyheartmedia.s3.ap-south-1.amazonaws.com/files/cd0c33b0594e4433d1a8ca61f11ef7/69ed5e99001e39939d46740c/sh_1777163968131.jpg');
+    --surface: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+    --accent: #c9a84c;
+    --accent2: #e8c97a;
+    --text: #f0ede8;
+    --muted: #8a8070;
+    --glow: rgba(201, 168, 76, 0.356);
+    --name-grad-1: var(--accent2);
+    --name-grad-2: #fff;
+    --name-grad-3: var(--accent);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-image: var(--bg-image-dark);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: var(--text);
+    font-family: 'Tajawal', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    transition: background 0.4s ease;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% -10%, rgba(201,168,76,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(100,80,200,0.07) 0%, transparent 50%),
+      radial-gradient(ellipse 50% 50% at 10% 90%, rgba(201,168,76,0.06) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0.95;
+  }
+
+  /* Grain texture */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    padding: 48px 24px 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* Theme toggle */
+  .theme-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    gap: 10px;
+    padding: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+    transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  }
+  .theme-toggle:hover { transform: scale(1.03); border-color: rgba(201,168,76,0.45); }
+  .theme-btn {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    color: var(--text);
+    background: rgba(255,255,255,0.08);
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .theme-btn.rotate {
+    animation: rotateIcon 0.5s ease;
+  }
+  @keyframes rotateIcon {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(180deg) scale(1.05); }
+    100% { transform: rotate(360deg); }
+  }
+  .theme-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.35) 0%, transparent 55%);
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+  }
+  .theme-btn:hover { transform: scale(1.08); background: rgba(255,255,255,0.14); }
+  .theme-btn:hover::before { opacity: 1; transform: scale(1); }
+  .theme-btn.active {
+    box-shadow: 0 0 0 1px rgba(201,168,76,0.45), 0 10px 30px rgba(0,0,0,0.2);
+    animation: bounce 0.8s ease;
+  }
+  .theme-btn.sun { color: #ffd76e; }
+  .theme-btn.moon { color: #d4d8ff; }
+  @keyframes bounce {
+    0% { transform: translateY(0) scale(1); }
+    30% { transform: translateY(-4px) scale(1.1); }
+    100% { transform: translateY(0) scale(1); }
+  }
+
+  /* Avatar */
+  .avatar-wrap {
+    position: relative;
+    margin-bottom: 28px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .avatar-ring {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(135deg, var(--accent), transparent 50%, var(--accent2));
+    position: relative;
+  }
+  .avatar-ring::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.2);
+    animation: spin 8s linear infinite;
+  }
+  .avatar-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a1830, #0d0d1a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    overflow: hidden;
+  }
+  .avatar-inner img {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  .avatar-badge {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 28px;
+    height: 28px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    border: 2px solid var(--bg);
+  }
+
+  /* Name & title */
+  .profile-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    font-weight: 900;
+    text-align: center;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--name-grad-1), var(--name-grad-2) 50%, var(--name-grad-3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .profile-title {
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s 0.2s ease both;
+    font-weight: 300;
+  }
+
+  /* Divider */
+  .divider {
+    width: 360px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s 0.25s ease both;
+  }
+
+  /* Links */
+  .links {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .link-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+  }
+
+  .link-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--glow), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .link-btn:hover {
+    transform: translateY(-2px) scale(1.01);
+    border-color: rgba(201,168,76,0.3);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,168,76,0.1);
+  }
+  .link-btn:hover::before { opacity: 1; }
+  .link-btn:active { transform: scale(0.98); }
+
+  .link-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .link-icon img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 4px rgba(255,255,255,0.2));
+  }
+
+  .link-text {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+  .link-label {
+    font-size: 15px;
+    font-weight: 700;
+    display: block;
+    letter-spacing: 0.2px;
+  }
+  .link-sublabel {
+    font-size: 12px;
+    color: var(--muted);
+    display: block;
+    margin-top: 1px;
+    font-weight: 300;
+  }
+
+  .link-arrow {
+    color: #ff0000;
+    font-size: 20px;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s, color 0.3s;
+  }
+  .link-btn:hover .link-arrow { transform: translateX(-4px); color: var(--accent); }
+
+  /* Platform colors */
+  .icon-facebook { background: rgba(24,119,242,0.15); }
+  .icon-instagram { background: rgba(225,48,108,0.15); }
+  .icon-whatsapp { background: rgba(37,211,102,0.15); }
+  .icon-telegram { background: rgba(0,136,204,0.15); }
+  .icon-tiktok { background: rgba(255,0,80,0.1); }
+  .icon-youtube { background: rgba(255,0,0,0.15); }
+  .icon-linkedin { background: rgba(0,136,204,0.15);}
+  .icon-snapchat { background: rgba(255,252,0,0.15); }
+  .icon-threads { background: rgba(0,0,0,0.15); }
+  /* Colored right-side accent lines */
+  .link-btn::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 12%;
+    height: 76%;
+    width: 4px;
+    border-radius: 4px 0 0 4px;
+    transition: height 0.3s ease, top 0.3s ease, opacity 0.3s;
+    opacity: 0.7;
+  }
+  .link-btn:hover::after { height: 88%; top: 6%; opacity: 1; }
+
+  .btn-youtube::after  { background: #ff0000; }
+  .btn-facebook::after { background: #1877f2; }
+  .btn-instagram::after { background: linear-gradient(180deg, #f58529, #dd2a7b, #8134af); }
+  .btn-whatsapp::after { background: #25d366; }
+  .btn-telegram::after { background: #0088cc; }
+  .btn-tiktok::after   { background: linear-gradient(180deg, #ff0050, #00f2ea); }
+  .btn-linkedin::after { background: #0088cc;}
+  .btn-snapchat::after { background: #fffc00; }
+  .btn-threads::after { background: #000; }
+
+  /* Staggered animation */
+  .link-btn:nth-child(1) { animation: fadeUp 0.7s 0.3s ease both; }
+  .link-btn:nth-child(2) { animation: fadeUp 0.7s 0.38s ease both; }
+  .link-btn:nth-child(3) { animation: fadeUp 0.7s 0.46s ease both; }
+  .link-btn:nth-child(4) { animation: fadeUp 0.7s 0.54s ease both; }
+  .link-btn:nth-child(5) { animation: fadeUp 0.7s 0.62s ease both; }
+  .link-btn:nth-child(6) { animation: fadeUp 0.7s 0.7s ease both; }
+  .link-btn:nth-child(7) { animation: fadeUp 0.7s 0.78s ease both;}
+  .link-btn:nth-child(8) { animation: fadeUp 0.7s 0.86s ease both;}
+  .link-btn:nth-child(9) { animation: fadeUp 0.7s 0.94s ease both;}
+
+
+  /* Footer */
+  .footer {
+    margin-top: 40px;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    animation: fadeUp 0.8s 0.8s ease both;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Light mode */
+  body.light {
+    background-image: var(--bg-image-light);
+    --bg: #f5f2eb;
+    --surface: rgba(0,0,0,0.04);
+    --border: rgba(0,0,0,0.08);
+    --text: #1a1612;
+    --muted: #7a7060;
+    --glow: rgba(201,168,76,0.1);
+    --name-grad-1: #d4b896;
+    --name-grad-2: #000;
+    --name-grad-3: #8b6f47;
+  }
+  body.light::before {
+    background:
+      radial-gradient(ellipse 60% 50% at 50% -10%, rgba(201,168,76,0.2) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(150,130,200,0.1) 0%, transparent 50%);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0.95;
+  }
+
+  body.light .avatar-inner { background: linear-gradient(135deg, #e8e0d0, #d5c8b0); }
+  body.light .profile-title { color: rgba(26, 22, 18, 0.95); }
+</style>
+</head>
+<body class="light">
+
+<div class="theme-toggle">
+  <button type="button" class="theme-btn sun" aria-label="تبديل الوضع" title="وضع النهار">☀️</button>
+</div>
+
+<div class="container">
+
+  <div class="avatar-wrap">
+    <div class="avatar-ring">
+      <div class="avatar-inner"><img src="https://surveyheartmedia.s3.ap-south-1.amazonaws.com/files/063e587367c1d1106ff80aaadeede5/6a259c4b160ebc719dc8c5a3/sh_1780849819933.jpg" alt="Dr. Emad's photo"></div>
+    </div>
+    <div class="avatar-badge">⚗️</div>
+  </div>
+
+  <h1 class="profile-name">Dr. Emad</h1>
+  <p class="profile-title">Pharmacist &amp; Chemistry Teacher</p>
+  <div class="divider"></div>
+
+  <div class="links">
+
+    <a href="https://www.facebook.com/share/1KjcXzzx8p/" class="link-btn btn-facebook" target="_blank" rel="noopener">
+      <div class="link-icon icon-facebook">
+        <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook">
+      </div>
+      <div class="link-text">
+        <span class="link-label">فيسبوك - Facebook</span>
+        <span class="link-sublabel">تابعنا على فيسبوك</span>
+      </div>
+      <span class="link-arrow">←</span>
+    </a>
+
+    <a href="https://www.instagram.com/dr.omda2" class="link-btn btn-instagram" target="_blank" rel="noopener">
+      <div class="link-icon icon-instagram">
+        <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram">
+      </div>
+      <div class="link-text">
+        <span class="link-label">انستجرام - Instagram</span>
+        <span class="link-sublabel">@dr.omda2</span>
+      </div>
+      <span class="link-arrow">←</span>
+    </a>
+
+    <a href="https://wa.me/201004935932" class="link-btn btn-whatsapp" target="_blank" rel="noopener">
+      <div class="link-icon icon-whatsapp">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+      </div>
+      <div class="link-text">
+        <span class="link-label">واتساب - WhatsApp</span>
+        <span class="link-sublabel">تواصل معنا مباشرة</span>
+      </div>
+      <span class="link-arrow">←</span>
+    </a>
+
+    <a href="https://www.youtube.com/@dr.omda2" class="link-btn btn-youtube" target="_blank" rel="noopener">
+      <div class="link-icon icon-youtube">
+        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
+      </div>
+      <div class="link-text">
+        <span class="link-label">يوتيوب - YouTube</span>
+        <span class="link-sublabel">@dr.omda2</span>
+      </div>
+      <span class="link-arrow">←</span>
+    </a>
+
+    <a href="https://t.me/dromda2" class="link-btn btn-telegram" target="_blank" rel="noopener">
+      <div class="link-icon icon-telegram">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram">
+      </div>
+      <div class="link-text">
+        <span class="link-label">تيليجرام - Telegram</span>
+        <span class="link-sublabel">@dromda2</span>
+      </div>
+      <span class="link-arrow">←</span>
+    </a>
+
+    <a href="https://www.tiktok.com/@dr.omda2" class="link-btn btn-tiktok" target="_blank" rel="noopener">
+      <div class="link-icon icon-tiktok">
+        <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TikTok">
+      </div>
+      <div class="link-text">
+        <span class="link-label">تيك توك - TikTok</span>
+        <span class="link-sublabel">@dr.omda2</span>
+      </div>
+      <span class="link-arrow">←</span>
+    </a>
+
+    <a href="https://www.linkedin.com/in/dromda" class="link-btn btn-linkedin" target="_blank" rel="noopener">
+      <div class="link-icon icon-linkedin">
+        <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="Linked In">
+      </div>
+      <div class="link-text">
+        <span class="link-label"> لينكد إن - LinkedIn  </span>
+        <span class="link-sublabel">تابعنا على لينكد إن</span>
+      </div>
+      <span class="link-arrow">←</span>
+    </a>
+
+    <a href="https://www.snapchat.com/add/dr.omda2" class="link-btn btn-snapchat" target="_blank" rel="noopener">
+      <div class="link-icon icon-snapchat">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111703.png" alt="Snapchat">
+      </div>
+      <div class="link-text">
+        <span class="link-label">سناب شات - Snapchat</span>
+        <span class="link-sublabel">@dr.omda2</span>
+      </div>
+      <span class="link-arrow">←</span>
+    </a>
+ 
+    <a href="https://www.threads.net/@dr.omda2" class="link-btn btn-threads" target="_blank" rel="noopener">
+      <div class="link-icon icon-threads">
+        <img src="https://cdn-icons-png.flaticon.com/512/12107/12107562.png" alt="Threads">
+      </div>
+      <div class="link-text">
+        <span class="link-label">ثريدز - Threads</span>
+        <span class="link-sublabel">@dr.omda2</span>
+      </div>
+      <span class="link-arrow">←</span>
+    </a>
+
+  </div>
+
+  <p class="footer">Dr. Emad · All rights reserved</p>
+</div>
+
+<script>
+  const themeButton = document.querySelector('.theme-btn');
+  const body = document.body;
+  let currentTheme = 'light';
+
+  function updateToggle() {
+    const isLight = currentTheme === 'light';
+    body.classList.toggle('light', isLight);
+    themeButton.textContent = isLight ? '☀️' : '🌙';
+    themeButton.title = isLight ? '☀️ Light Mood ' : '🌙 Dark Mood';
+    themeButton.setAttribute('aria-label', isLight ? 'التبديل إلى الوضع الداكن' : 'التبديل إلى الوضع الفاتح');
+    themeButton.classList.toggle('sun', isLight);
+    themeButton.classList.toggle('moon', !isLight);
+  }
+
+  themeButton.addEventListener('click', () => {
+    currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+    body.classList.add('theme-transition');
+    window.clearTimeout(body.dataset.transitionTimeout);
+    body.dataset.transitionTimeout = window.setTimeout(() => body.classList.remove('theme-transition'), 500);
+    themeButton.classList.remove('rotate');
+    void themeButton.offsetWidth;
+    themeButton.classList.add('rotate');
+    updateToggle();
+  });
+
+  updateToggle();
+</script>
+
+</body>
+</html>
