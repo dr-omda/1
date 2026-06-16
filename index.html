@@ -661,31 +661,59 @@
 <script>
   const themeButton = document.querySelector('.theme-btn');
   const body = document.body;
-  let currentTheme = 'light';
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 
-  function updateToggle() {
-    const isLight = currentTheme === 'light';
-    body.classList.toggle('light', isLight);
-    body.classList.toggle('dark', !isLight);
-    themeButton.textContent = isLight ? '☀️' : '🌙';
-    themeButton.title = isLight ? '☀️ Light Mood ' : '🌙 Dark Mood';
-    themeButton.setAttribute('aria-label', isLight ? 'التبديل إلى الوضع الداكن' : 'التبديل إلى الوضع الفاتح');
-    themeButton.classList.toggle('sun', isLight);
-    themeButton.classList.toggle('moon', !isLight);
+  function setTheme(theme) {
+    const isDark = theme === 'dark';
+    body.classList.toggle('dark', isDark);
+    body.classList.toggle('light', !isDark);
+    themeButton.textContent = isDark ? '🌙' : '☀️';
+    themeButton.title = isDark ? 'الوضع الداكن' : 'الوضع الفاتح';
+    themeButton.setAttribute('aria-label', isDark ? 'تبديل إلى الوضع الفاتح' : 'تبديل إلى الوضع الداكن');
+    themeButton.classList.toggle('moon', isDark);
+    themeButton.classList.toggle('sun', !isDark);
+  }
+
+  function saveTheme(theme) {
+    localStorage.setItem('preferredTheme', theme);
+  }
+
+  function loadTheme() {
+    return localStorage.getItem('preferredTheme');
+  }
+
+  function getInitialTheme() {
+    const saved = loadTheme();
+    if (saved === 'dark' || saved === 'light') {
+      return saved;
+    }
+    return prefersDark.matches ? 'dark' : 'light';
+  }
+
+  function toggleTheme() {
+    const current = body.classList.contains('dark') ? 'dark' : 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    saveTheme(next);
   }
 
   themeButton.addEventListener('click', () => {
-    currentTheme = currentTheme === 'light' ? 'dark' : 'light';
     body.classList.add('theme-transition');
     window.clearTimeout(body.dataset.transitionTimeout);
     body.dataset.transitionTimeout = window.setTimeout(() => body.classList.remove('theme-transition'), 500);
     themeButton.classList.remove('rotate');
     void themeButton.offsetWidth;
     themeButton.classList.add('rotate');
-    updateToggle();
+    toggleTheme();
   });
 
-  updateToggle();
+  prefersDark.addEventListener('change', (event) => {
+    if (!loadTheme()) {
+      setTheme(event.matches ? 'dark' : 'light');
+    }
+  });
+
+  setTheme(getInitialTheme());
 </script>
 
 </body>
