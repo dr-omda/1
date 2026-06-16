@@ -8,9 +8,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --img: url('https://surveyheartmedia.s3.ap-south-1.amazonaws.com/files/cd0c33b0594e4433d1a8ca61f11ef7/6a2e019efda9df4edf755681/sh_1781399992362.png');
     --bg-image-light: url('https://surveyheartmedia.s3.ap-south-1.amazonaws.com/files/cd0c33b0594e4433d1a8ca61f11ef7/6a2aa638950484b9af28f9f8/sh_1781180030171.jpg');
-    --bg-image-dark: url('https://surveyheartmedia.s3.ap-south-1.amazonaws.com/files/cd0c33b0594e4433d1a8ca61f11ef7/69ed5e99001e39939d46740c/sh_1777163968131.jpg');
+    --bg-image-dark: url('https://surveyheartmedia.s3.ap-south-1.amazonaws.com/files/cd0c33b0594e4433d1a8ca61f11ef7/6a314632ccab847d5f6dde74/sh_1781614403930.jpg');
     --surface: rgba(255,255,255,0.04);
     --border: rgba(255,255,255,0.08);
     --accent: #c9a84c;
@@ -26,11 +25,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background-image: var(--bg-image-dark);
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+    background: transparent;
     color: var(--text);
     font-family: 'Tajawal', sans-serif;
     min-height: 100vh;
@@ -38,7 +33,37 @@
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
-    transition: background 0.4s ease;
+    transition: background-color 0.4s ease;
+  }
+
+  .bg-layer {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    opacity: 0;
+    transition: opacity 0.9s ease, transform 0.9s ease;
+    transform: scale(1.02);
+    pointer-events: none;
+  }
+  .bg-layer.light-bg {
+    background-image: var(--bg-image-light);
+    opacity: 1;
+    transform: scale(1);
+  }
+  .bg-layer.dark-bg {
+    background-image: var(--bg-image-dark);
+  }
+  body.dark .bg-layer.light-bg {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  body.dark .bg-layer.dark-bg {
+    opacity: 1;
+    transform: scale(1);
   }
 
   /* Animated background */
@@ -57,14 +82,15 @@
     opacity: 0.95;
   }
 
-  /* Grain texture */
   body::after {
     content: '';
     position: fixed;
     inset: 0;
-    background-size: cover;
-    background-position: center;
-    opacity: 0.4;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(255,255,255,0.08), transparent 24%),
+      radial-gradient(circle at 80% 25%, rgba(255,255,255,0.06), transparent 24%),
+      radial-gradient(circle at 50% 80%, rgba(0,0,0,0.08), transparent 48%);
+    opacity: 0.38;
     pointer-events: none;
     z-index: 0;
   }
@@ -456,10 +482,9 @@
     to { transform: rotate(360deg); }
   }
 
-  /* Light mode */
+  /* Light mode (visuals isolated) */
   body.light {
-    background-image: var(--bg-image-light);
-    --bg: #f5f2eb;
+    --bg: var(--bg-image-light);
     --surface: rgba(0,0,0,0.04);
     --border: rgba(0,0,0,0.08);
     --text: #1a1612;
@@ -480,9 +505,34 @@
 
   body.light .avatar-inner { background: linear-gradient(135deg, #e8e0d0, #d5c8b0); }
   body.light .profile-title { color: rgba(26, 22, 18, 0.95); }
+
+  /* Dark mode (separate overrides) */
+  body.dark {
+    --bg: var(--bg-image-dark);
+   --surface: rgba(255,255,255,0.03);
+    --border: rgba(255,255,255,0.05);
+    --text: #f0ede8;
+    --muted: #8a8070;
+    --glow: rgba(201,168,76,0.28);
+    --name-grad-1: var(--accent2);
+    --name-grad-2: #fff;
+    --name-grad-3: var(--accent);
+  }
+  body.dark::before {
+    background:
+      radial-gradient(ellipse 60% 50% at 50% -10%, rgba(201,168,76,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(100,80,200,0.07) 0%, transparent 50%),
+      radial-gradient(ellipse 50% 50% at 10% 90%, rgba(201,168,76,0.06) 0%, transparent 50%);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0.95;
+  }
+  body.dark .avatar-inner { background: linear-gradient(135deg, #1a1830, #0d0d1a); }
 </style>
 </head>
 <body class="light">
+  <div class="bg-layer light-bg"></div>
+  <div class="bg-layer dark-bg"></div>
 
 <div class="theme-toggle">
   <button type="button" class="theme-btn sun" aria-label="تبديل الوضع" title="وضع النهار">☀️</button>
@@ -616,6 +666,7 @@
   function updateToggle() {
     const isLight = currentTheme === 'light';
     body.classList.toggle('light', isLight);
+    body.classList.toggle('dark', !isLight);
     themeButton.textContent = isLight ? '☀️' : '🌙';
     themeButton.title = isLight ? '☀️ Light Mood ' : '🌙 Dark Mood';
     themeButton.setAttribute('aria-label', isLight ? 'التبديل إلى الوضع الداكن' : 'التبديل إلى الوضع الفاتح');
