@@ -341,13 +341,19 @@
   .action-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
 
   .action-btn.primary {
-    background: linear-gradient(135deg, var(--accent2), var(--accent));
-    color: #1a1408;
-    box-shadow: 0 8px 22px rgba(201,168,76,0.28);
+    background: linear-gradient(135deg, #edf2f7, #dfe7f3 45%, #d2dfe9);
+    color: #243446;
+    border-color: rgba(117, 138, 159, 0.28);
+    box-shadow: 0 8px 22px rgba(116, 136, 159, 0.2);
+  }
+  .action-btn.primary svg {
+    color: #4e6274;
+    stroke: currentColor;
+    opacity: 0.95;
   }
   .action-btn.primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(201,168,76,0.4);
+    box-shadow: 0 12px 28px rgba(116, 136, 159, 0.28);
   }
 
   .toast {
@@ -384,6 +390,7 @@
   }
 
   .link-btn {
+    --platform-glow: rgba(201,168,76,0.25);
     display: flex;
     align-items: center;
     gap: 14px;
@@ -404,15 +411,15 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, var(--glow), transparent);
+    background: linear-gradient(135deg, var(--platform-glow), transparent);
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s ease;
   }
 
   .link-btn:hover {
     transform: translateY(-2px) scale(1.01);
     border-color: rgba(201,168,76,0.3);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,168,76,0.1);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,168,76,0.1), 0 0 22px var(--platform-glow);
   }
   .link-btn:hover::before { opacity: 1; }
   .link-btn:active { transform: scale(0.98); }
@@ -502,27 +509,29 @@
   .link-btn:hover .link-arrow { transform: translateX(-4px); color: var(--accent); }
 
   /* Platform colors */
-  .icon-facebook { background: rgba(24,119,242,0.15); --platform-glow: rgba(24,119,242,0.35); }
-  .icon-instagram { background: rgba(225,48,108,0.15); --platform-glow: rgba(225,48,108,0.35); }
-  .icon-whatsapp { background: rgba(37,211,102,0.15); --platform-glow: rgba(37,211,102,0.35); }
-  .icon-telegram { background: rgba(0,136,204,0.15); --platform-glow: rgba(0,136,204,0.35); }
-  .icon-tiktok { background: rgba(255,0,80,0.1); --platform-glow: rgba(255,0,80,0.3); }
-  .icon-youtube { background: rgba(255,0,0,0.15); --platform-glow: rgba(255,0,0,0.35); }
-  .icon-linkedin { background: rgba(0,136,204,0.15); --platform-glow: rgba(0,136,204,0.35); }
-  .icon-snapchat { background: rgba(255,252,0,0.15); --platform-glow: rgba(255,252,0,0.35); }
-  .icon-threads { background: rgba(0,0,0,0.15); --platform-glow: rgba(0,0,0,0.35); }
-  .icon-snapchat {
-    background: rgba(255,252,0,0.25);
-    --platform-glow: rgba(255,252,0,0.45);
-    border-radius: 50%;
-  }
-  .icon-snapchat::after {
-    border-radius: 50%;
-  }
-  .icon-snapchat img {
-    width: 28px;
-    height: 28px;
-  }
+  .icon-facebook { background: rgba(24,119,242,0.15); --platform-glow: rgba(24,119,242,0.45); }
+  .icon-instagram { background: rgba(225,48,108,0.15); --platform-glow: rgba(225,48,108,0.45); }
+  .icon-whatsapp { background: rgba(37,211,102,0.15); --platform-glow: rgba(37,211,102,0.45); }
+  .icon-telegram { background: rgba(0,136,204,0.15); --platform-glow: rgba(0,136,204,0.45); }
+  .icon-tiktok { background: rgba(255,0,80,0.1); --platform-glow: rgba(255,0,80,0.4); }
+  .icon-youtube { background: rgba(255,0,0,0.15); --platform-glow: rgba(255,0,0,0.45); }
+  .icon-linkedin { background: rgba(0,136,204,0.15); --platform-glow: rgba(0,136,204,0.45); }
+  .icon-snapchat { background: rgba(255,252,0,0.25); --platform-glow: rgba(255,252,0,0.55); border-radius: 50%; box-shadow: inset 0 0 12px rgba(255,252,0,0.18), 0 0 18px rgba(255,252,0,0.22); }
+  .icon-threads { background: rgba(0,0,0,0.15); --platform-glow: rgba(0,0,0,0.45); }
+  .icon-snapchat::after { border-radius: 50%; }
+  .icon-snapchat img { width: 28px; height: 28px; }
+
+  .btn-facebook { --platform-glow: rgba(24,119,242,0.45); }
+  .btn-instagram { --platform-glow: rgba(225,48,108,0.45); }
+  .btn-whatsapp { --platform-glow: rgba(37,211,102,0.45); }
+  .btn-telegram { --platform-glow: rgba(0,136,204,0.45); }
+  .btn-tiktok { --platform-glow: rgba(255,0,80,0.4); }
+  .btn-youtube { --platform-glow: rgba(255,0,0,0.45); }
+  .btn-linkedin { --platform-glow: rgba(0,136,204,0.45); }
+  .btn-snapchat { --platform-glow: rgba(255,252,0,0.55); box-shadow: inset 0 0 0 1px rgba(255,252,0,0.12); }
+  .btn-snapchat:hover { box-shadow: 0 10px 26px rgba(255,252,0,0.14), 0 0 0 1px rgba(255,252,0,0.18), 0 0 22px var(--platform-glow); }
+  .btn-threads { --platform-glow: rgba(0,0,0,0.45); }
+
   /* Colored right-side accent lines */
   .link-btn::after {
     content: '';
@@ -860,7 +869,7 @@
   shareBtn.addEventListener('click', async () => {
     const shareData = {
       title: 'Dr. Emad',
-      text: 'صيدلي ومدرس كيمياء - تابع صفحتي',
+      text: 'صيدلي ومدرس كيمياء - تواصل معنا',
       url: window.location.href
     };
 
@@ -882,7 +891,7 @@
         // user cancelled the share sheet — no action needed
       }
 
-      showToast('تعذّر نسخ الرابط');
+      showToast('متنسخش يكبير 🫠');
     }
   });
 </script>
