@@ -315,9 +315,25 @@
   .action-row {
     width: 100%;
     display: flex;
-    gap: 12px;
+    align-items: center;
+    gap: 14px;
     margin-top: 28px;
+    padding: 16px 20px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.06);
+    backdrop-filter: blur(10px);
     animation: fadeUp 0.7s 1s ease both;
+    transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .action-row:active,
+  .action-row.is-touching,
+  .action-row:focus-within {
+    transform: translateY(-2px) scale(1.01);
+    border-color: var(--accent2);
+    background: linear-gradient(135deg, rgba(232,201,122,0.3), rgba(201,168,76,0.12));
+    box-shadow: 0 12px 32px rgba(0,0,0,0.24), 0 0 26px rgba(232,201,122,0.38), inset 0 1px 0 rgba(255,255,255,0.16);
   }
   .action-btn {
     flex: 1;
@@ -341,19 +357,19 @@
   .action-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
 
   .action-btn.primary {
-    background: linear-gradient(135deg, #edf2f7, #dfe7f3 45%, #d2dfe9);
-    color: #243446;
-    border-color: rgba(117, 138, 159, 0.28);
-    box-shadow: 0 8px 22px rgba(116, 136, 159, 0.2);
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    color: #201a0c;
+    border-color: rgba(232,201,122,0.4);
+    box-shadow: 0 8px 22px rgba(201,168,76,0.22);
   }
   .action-btn.primary svg {
-    color: #4e6274;
+    color: #201a0c;
     stroke: currentColor;
     opacity: 0.95;
   }
   .action-btn.primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(116, 136, 159, 0.28);
+    box-shadow: 0 12px 28px rgba(201,168,76,0.34);
   }
 
   .toast {
@@ -500,13 +516,13 @@
   }
 
   .link-arrow {
-    color: #29ace4c1;
+    color: var(--platform-color, var(--accent));
     font-size: 20px;
     position: relative;
     z-index: 1;
     transition: transform 0.3s, color 0.3s;
   }
-  .link-btn:hover .link-arrow { transform: translateX(-4px); color: var(--accent); }
+  .link-btn:hover .link-arrow { transform: translateX(-4px); color: var(--platform-color, var(--accent)); }
 
   /* Platform colors */
   .icon-facebook { background: rgba(24,119,242,0.15); --platform-glow: rgba(24,119,242,0.45); }
@@ -521,16 +537,23 @@
   .icon-snapchat::after { border-radius: 50%; }
   .icon-snapchat img { width: 28px; height: 28px; }
 
-  .btn-facebook { --platform-glow: rgba(24,119,242,0.45); }
-  .btn-instagram { --platform-glow: rgba(225,48,108,0.45); }
-  .btn-whatsapp { --platform-glow: rgba(37,211,102,0.45); }
-  .btn-telegram { --platform-glow: rgba(0,136,204,0.45); }
-  .btn-tiktok { --platform-glow: rgba(255,0,80,0.4); }
-  .btn-youtube { --platform-glow: rgba(255,0,0,0.45); }
-  .btn-linkedin { --platform-glow: rgba(0,136,204,0.45); }
-  .btn-snapchat { --platform-glow: rgba(255,252,0,0.55); box-shadow: inset 0 0 0 1px rgba(255,252,0,0.12); }
+  .btn-facebook { --platform-color: #1877f2; --platform-glow: rgba(24,119,242,0.45); }
+  .btn-instagram { --platform-color: #dd2a7b; --platform-glow: rgba(225,48,108,0.45); }
+  .btn-whatsapp { --platform-color: #25d366; --platform-glow: rgba(37,211,102,0.45); }
+  .btn-telegram { --platform-color: #0088cc; --platform-glow: rgba(0,136,204,0.45); }
+  .btn-tiktok { --platform-color: #ff0050; --platform-glow: rgba(255,0,80,0.4); }
+  .btn-youtube { --platform-color: #ff0000; --platform-glow: rgba(255,0,0,0.45); }
+  .btn-linkedin { --platform-color: #0088cc; --platform-glow: rgba(0,136,204,0.45); }
+  .btn-snapchat { --platform-color: #fffc00; --platform-glow: rgba(255,252,0,0.55); box-shadow: inset 0 0 0 1px rgba(255,252,0,0.12); }
   .btn-snapchat:hover { box-shadow: 0 10px 26px rgba(255,252,0,0.14), 0 0 0 1px rgba(255,252,0,0.18), 0 0 22px var(--platform-glow); }
   .btn-threads { --platform-glow: rgba(0,0,0,0.45); }
+  .btn-tiktok .link-arrow {
+    background: linear-gradient(180deg, #ff0050, #00f2ea);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
 
   /* Colored right-side accent lines */
   .link-btn::after {
@@ -693,7 +716,7 @@
       <span class="link-arrow">←</span>
     </a>
 
-    <a href="https://www.youtube.com/@dr.omda2" class="link-btn btn-youtube" target="_blank" rel="noopener">
+    <!-- <a href="https://www.youtube.com/@dr.omda2" class="link-btn btn-youtube" target="_blank" rel="noopener">
       <div class="link-icon icon-youtube">
         <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
       </div>
@@ -702,7 +725,7 @@
         <span class="link-sublabel">@dr.omda2</span>
       </div>
       <span class="link-arrow">←</span>
-    </a>
+    </a> -->
 
     <a href="https://t.me/dromda2" class="link-btn btn-telegram" target="_blank" rel="noopener">
       <div class="link-icon icon-telegram">
@@ -764,7 +787,7 @@
   <div class="action-row">
     <button type="button" class="action-btn primary" id="shareBtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-      <span>نسخ الرابط</span>
+      <span>شارك الرابط الآن</span>
     </button>
   </div>
 
@@ -894,6 +917,12 @@
       showToast('متنسخش يكبير 🫠');
     }
   });
+
+  const actionRow = document.querySelector('.action-row');
+  actionRow.addEventListener('pointerdown', () => actionRow.classList.add('is-touching'));
+  actionRow.addEventListener('pointerup', () => actionRow.classList.remove('is-touching'));
+  actionRow.addEventListener('pointercancel', () => actionRow.classList.remove('is-touching'));
+  actionRow.addEventListener('pointerleave', () => actionRow.classList.remove('is-touching'));
 </script>
 
 </body>
